@@ -1,0 +1,46 @@
+"use client";
+
+import { useState } from "react";
+import GLBViewer from "./GLBViewer";
+
+export default function Page() {
+  const [fileUrl, setFileUrl] = useState<string | null>("/models/Desk.glb");
+
+  const handleChangeModel = (newUrl: string) => {
+    // Reset first to force re-render
+    setFileUrl(null);
+
+    // Small timeout to allow unmount before re-mount
+    setTimeout(() => {
+      setFileUrl(newUrl);
+    }, 50);
+  };
+
+  return (
+    <div className="flex flex-col items-center gap-4 p-4">
+      <div className="flex gap-2">
+        <button
+          onClick={() => handleChangeModel("/models/Desk.glb")}
+          className="px-3 py-1 bg-blue-600 text-white rounded"
+        >
+          Desk
+        </button>
+        <button
+          onClick={() => handleChangeModel("/models/Car.glb")}
+          className="px-3 py-1 bg-green-600 text-white rounded"
+        >
+          Car
+        </button>
+        <button
+          onClick={() => handleChangeModel("/models/Robot.glb")}
+          className="px-3 py-1 bg-purple-600 text-white rounded"
+        >
+          Robot
+        </button>
+      </div>
+
+      {/* Only render when fileUrl is valid */}
+      {fileUrl && <GLBViewer key={fileUrl} fileUrl={fileUrl} transparentBg />}
+    </div>
+  );
+}
